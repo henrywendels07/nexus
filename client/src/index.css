@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #00D9FF;
+  --secondary: #6366F1;
+  --accent: #10B981;
+  --space-900: #0A0F1C;
+  --space-800: #111827;
+  --space-700: #1F2937;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body, #root { height: 100%; width: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--space-900);
+  color: #F9FAFB;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--space-800); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--space-600); border-radius: 3px; }
+
+
+.glass {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glow-primary { box-shadow: 0 0 20px rgba(0, 217, 255, 0.3); }
+.text-glow { text-shadow: 0 0 10px rgba(0, 217, 255, 0.5); }
+
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
+.animate-pulse-slow { animation: pulse 2s ease-in-out infinite; }
+
+.card {
+  @apply bg-space-800/80 rounded-xl border border-space-700/50 p-6;
+  @apply backdrop-blur-sm transition-all duration-200;
+}
+.card-hover {
+  @apply hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10;
+}
+
+.status-dot { @apply w-2 h-2 rounded-full; }
+.status-online { @apply bg-accent animate-pulse-slow; }
+.status-offline { @apply bg-gray-500; }
+.status-warning { @apply bg-warning; }
+.status-error { @apply bg-error; }
+
+.input-field {
+  @apply bg-space-800 border border-space-600 rounded-lg px-4 py-2.5 text-white;
+  @apply focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50;
+  @apply placeholder:text-gray-500 transition-all duration-200;
+}
+
+.btn-primary {
+  @apply bg-primary text-space-900 font-semibold px-4 py-2 rounded-lg transition-all duration-200;
+  @apply hover:shadow-lg hover:shadow-primary/30 active:scale-95;
+}
+.btn-secondary {
+  @apply bg-space-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200;
+  @apply hover:bg-space-600 active:scale-95 border border-space-600;
+}
