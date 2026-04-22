@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  nexus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nexus
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - OLLAMA_HOST=http://ollama:11434
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/.ollama:/root/.ollama:ro
+    networks:
+      - nexus-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama/models
+    networks:
+      - nexus-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+networks:
+  nexus-network:
+    driver: bridge
+
+volumes:
+  ollama-models:
